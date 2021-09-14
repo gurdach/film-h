@@ -82,7 +82,7 @@ export default function SliderMovies(props) {
 
     var settingsSlider = {
         dots: true,
-        autoplay:false,
+        autoplay: true,
         infinite: true,
         autoplaySpeed: 3000,
         speed: 200,
@@ -99,7 +99,7 @@ export default function SliderMovies(props) {
               settings: {
                 slidesToShow: 4,
                 slidesToScroll: 3,
-                dots: true
+                dots: false
               }
             },
             {
@@ -107,7 +107,7 @@ export default function SliderMovies(props) {
                 settings: {
                   slidesToShow: 3,
                   slidesToScroll: 2,
-                  dots: true
+                  dots: false
                 }
             },
             {
@@ -115,7 +115,7 @@ export default function SliderMovies(props) {
                 settings: {
                   slidesToShow: 2,
                   slidesToScroll: 1,
-                  dots: true
+                  dots: false
                 }
             },
             {
@@ -123,7 +123,7 @@ export default function SliderMovies(props) {
                 settings: {
                   slidesToShow: 2,
                   slidesToScroll: 1,
-                  dots: true
+                  dots: false
                 }
               },
             {
@@ -131,7 +131,7 @@ export default function SliderMovies(props) {
                 settings: {
                   slidesToShow: 1,
                   slidesToScroll: 1,
-                  dots: true
+                  dots: false
                 }
             }
         ],
