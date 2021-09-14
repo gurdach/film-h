@@ -31,11 +31,7 @@ function readURL(url) {
     })
 }
 
-app.use(express.static(path.join(__dirname, 'client/build')))
-
-app.get("/", (req, res) => {
-    res.sendFile(express.static(path.join(__dirname, 'public')));
-  });
+app.use(express.static("public"))
 
 app.get('/getFilm/:filmType/:num', function (req, res) {
     
