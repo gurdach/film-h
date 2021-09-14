@@ -80,7 +80,6 @@ export default function MovieItem(props) {
 
     const handleMovieClick = () => {
         const iframe_src = 'https://film-h.herokuapp.com/getFilm' + props.data.iframe_src.slice(26)
-        console.log(iframe_src)
         props.onMovieClick(iframe_src)
     }
 

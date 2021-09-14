@@ -84,11 +84,9 @@ function Header(props) {
 
   const listenScrollEvent = e => {
     if (window.scrollY > 50) {
-      console.log('scroll 400')
       setShadowHeader(true)
     }
     if (window.scrollY < 50) {
-      console.log('scroll down 400')
       setShadowHeader(false)
     }
   }
