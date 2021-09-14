@@ -30,8 +30,12 @@ function readURL(url) {
         }).on('error', (e) => reject(e)); // ошибка -> отклоняем Промис
     })
 }
-
+app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(express.static(path.join(__dirname, 'client/build')))
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  });
 
 app.get('/getFilm/:filmType/:num', function (req, res) {
     
