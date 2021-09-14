@@ -66,9 +66,10 @@ const useStyles = makeStyles((theme) => ({
       },
   },
   shadowHeader: {
-    background: 'rgb(0,0,0)',
-    background: 'linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8435749299719888) 35%, rgba(255,255,255,0) 100%)',
-    backgroundPosition: '0px',
+    background: '-moz-linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 39%, rgba(255,255,255,0) 100%)',
+    background: '-webkit-linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 39%, rgba(255,255,255,0) 100%)',
+    background: 'linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 39%, rgba(255,255,255,0) 100%)',
+    filter: 'progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#ffffff",GradientType=1)',
   },
 }));
 

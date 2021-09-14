@@ -104,7 +104,6 @@ function App() {
     }
 
     if (result.data) {
-      console.log(result.data)
       if (isSearch) {
         return <>
         <ResultSearch result={result.data} onMovieClick={handleMovieClick} searchQuery={searchQuery}/>
@@ -124,7 +123,10 @@ function App() {
 
   return (
     <div className={classes.root}>
-      <Header onLogoClick={logoClickHandler} onSearch={searchHandler} formClickHandler={formClickHandler} formCloseHandler={formCloseHandler}/>
+      {!iframeSrc
+        ? <Header onLogoClick={logoClickHandler} onSearch={searchHandler} formClickHandler={formClickHandler} formCloseHandler={formCloseHandler}/>
+        : ''
+      }
       {searchActive 
         ? <MovieBackdrop opened={backdropIsOpened} onClose={handleCloseBackdrop} />
         : ''
