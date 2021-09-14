@@ -31,6 +31,8 @@ function readURL(url) {
     })
 }
 
+app.use(express.static(path.join(__dirname, 'client/build')))
+
 app.get('/getFilm/:filmType/:num', function (req, res) {
     
     res.setHeader("Content-Type", "text/html");
@@ -48,9 +50,9 @@ app.get('/getFilm/:filmType/:num', function (req, res) {
         const dom = new JSDOM(`${data}`);
         const scripts = dom.window.document.getElementsByTagName('script');
         const links_head = dom.window.document.getElementsByTagName('link');
-        scripts[0].src = `http://localhost:${PORT}/playerjs.js`
-        scripts[1].src = `http://localhost:${PORT}/iframe.js`
-        links_head[0].href = `http://localhost:${PORT}/iframe.css`
+        scripts[0].src = `http://localhost:3000/playerjs.js`
+        scripts[1].src = `http://localhost:3000/iframe.js`
+        links_head[0].href = `http://localhost:3000/iframe.css`
         //console.log(dom.window.document.getElementsByTagName('script')[0]); // "Hello world"
         const outResp = dom.serialize()
         //console.log(outResp)
