@@ -1,0 +1,66 @@
+const https = require('https')
+var express = require('express')
+const jsdom = require("jsdom");
+const path = require('path');
+const { JSDOM } = jsdom;
+var app = express()
+
+function readURL(url) {
+    const BASE_URL = 'https://47.svetacdn.in/zXL4q2eWJ65J/'
+    url = BASE_URL+url
+    return new Promise((resolve, reject) => {
+        https.get(url, (res) => {
+            const { statusCode } = res;
+            console.log(statusCode)
+            let error;
+            if (statusCode !== 200) {
+                error = new Error(`Ошибка запроса. Код ответа: ${statusCode}`);
+            }
+            if (error) {
+
+                reject(error);
+                res.resume();
+                return;
+            }
+            let rawData = '';
+            res.on('data', chunk => rawData += chunk);
+            res.on('end', () => resolve(rawData));
+        }).on('error', (e) => reject(e)); // ошибка -> отклоняем Промис
+    })
+}
+
+app.get('/getFilm/:filmType/:num', function (req, res) {
+    
+    res.setHeader("Content-Type", "text/html");
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    const type = req.params["filmType"]
+    const num = req.params["num"]
+    
+    
+    console.log(type)
+    const startReq = new Date().getTime();
+    readURL(type + '/' + num)
+    .then(data => {
+        
+        const dom = new JSDOM(`${data}`);
+        const scripts = dom.window.document.getElementsByTagName('script');
+        const links_head = dom.window.document.getElementsByTagName('link');
+        scripts[0].src = 'http://192.168.1.2:3000/playerjs.js'
+        scripts[1].src = 'http://192.168.1.2:3000/iframe.js'
+        links_head[0].href = 'http://192.168.1.2:3000/iframe.css?'
+        //console.log(dom.window.document.getElementsByTagName('script')[0]); // "Hello world"
+        const outResp = dom.serialize()
+        //console.log(outResp)
+        //console.log(dom)
+        //{html: outResp}
+        res.send(outResp)
+        const endReq = new Date().getTime();
+        console.log(`SecondWay: ${endReq - startReq}ms`);
+        console.log(req.connection.remoteAddress)
+    }
+)
+.catch(err => console.log(err.message))
+})
+
+app.listen(3005)
