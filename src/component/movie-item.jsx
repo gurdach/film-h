@@ -64,7 +64,6 @@ export default function MovieItem(props) {
 
             const FILE_PATH = () => {
                 if (result.movie_results.length) {
-                    // console.log(result.movie_results)
                     return BASE_URL + FILE_SIZE + '/' + result.movie_results[0].poster_path
                 }
                 else if (result.tv_results.length) {
@@ -74,7 +73,6 @@ export default function MovieItem(props) {
                     return 'https://via.placeholder.com/150x220/eee'
                 }
             }
-            // console.log(FILE_PATH())
             return <><img className={classes.img} src={FILE_PATH()} alt="" /></>
         }
 

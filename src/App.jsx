@@ -52,13 +52,11 @@ function App() {
         setError(error)
       })
     }
-
   }
 
   useEffect(() => {
     setSearchState(false)
     getMovies()
-    // eslint-disable-next-line
   }, [currentPage])
 
   const logoClickHandler = () => {
@@ -67,7 +65,6 @@ function App() {
   }
 
   const searchHandler = (query) => {
-    console.log('SEARCH: ' + query)
     setSearchState(true)
     setSearchQuery(query)
     short({ title: query }).then(result => {
@@ -87,13 +84,11 @@ function App() {
   }
 
   const formClickHandler = () => {
-    console.log('clicked on side')
     setBackdropState(true)
     setSearchActive(true)
   }
 
   const formCloseHandler = () => {
-    console.log('clicked outside')
     setSearchActive(false)
     iframeSrc ? setBackdropState(true) : setBackdropState(false)
   }
