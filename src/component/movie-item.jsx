@@ -81,7 +81,7 @@ export default function MovieItem(props) {
     }
 
     const handleMovieClick = () => {
-        const iframe_src = 'http://192.168.1.2:3005/getFilm' + props.data.iframe_src.slice(26)
+        const iframe_src = 'http://localhost:3001/getFilm' + props.data.iframe_src.slice(26)
         console.log(iframe_src)
         props.onMovieClick(iframe_src)
     }

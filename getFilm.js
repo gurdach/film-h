@@ -5,6 +5,8 @@ const path = require('path');
 const { JSDOM } = jsdom;
 var app = express()
 
+const PORT = process.env.PORT || 3001;
+
 function readURL(url) {
     const BASE_URL = 'https://47.svetacdn.in/zXL4q2eWJ65J/'
     url = BASE_URL+url
@@ -46,9 +48,9 @@ app.get('/getFilm/:filmType/:num', function (req, res) {
         const dom = new JSDOM(`${data}`);
         const scripts = dom.window.document.getElementsByTagName('script');
         const links_head = dom.window.document.getElementsByTagName('link');
-        scripts[0].src = 'http://192.168.1.2:3000/playerjs.js'
-        scripts[1].src = 'http://192.168.1.2:3000/iframe.js'
-        links_head[0].href = 'http://192.168.1.2:3000/iframe.css?'
+        scripts[0].src = `http://localhost:${PORT}/playerjs.js`
+        scripts[1].src = `http://localhost:${PORT}/iframe.js`
+        links_head[0].href = `http://localhost:${PORT}/iframe.css`
         //console.log(dom.window.document.getElementsByTagName('script')[0]); // "Hello world"
         const outResp = dom.serialize()
         //console.log(outResp)
@@ -63,4 +65,4 @@ app.get('/getFilm/:filmType/:num', function (req, res) {
 .catch(err => console.log(err.message))
 })
 
-app.listen(3005)
+app.listen(PORT)
