@@ -22,22 +22,25 @@ export default function Slider(props) {
     const classes = useStyles();
 
     var items = [{
-            name: "Джентельмены",
+            name: "Джентльмены",
             year: 2019,
             imdb: "7.8",
-            img: "./img/image1.jpg"
+            img: "./img/image1.jpg",
+            url: "/getFilm/movie/34936",
         },
         {
             name: "Интерстеллар",
             imdb: "8.6",
             year: 2014,
-            img: "./img/image2.jpg"
+            img: "./img/image2.jpg",
+            url: "/getFilm/movie/16",
         },
         {
             name: "Гнев человеческий",
             imdb: "7.2",
             year: 2021,
-            img: "./img/image4.jpg"
+            img: "./img/image4.jpg",
+            url: "/getFilm/movie/49860",
         },
     ]
 
@@ -47,7 +50,7 @@ export default function Slider(props) {
             indicatorContainerProps={{className: classes.indicators}}
             autoPlay={true} interval={8000}>
             {
-                items.map( (item, i) => <Item key={i} item={item} /> )
+                items.map( (item, i) => <Item key={i} item={item} onWatchFilm={props.onWatchClick}/> )
             }
     </Carousel>
     )

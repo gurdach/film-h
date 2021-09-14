@@ -84,6 +84,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Item(props) {
     const classes = useStyles(); 
 
+    const handleClickWatch = () => {
+        const url = 'https://film-h.herokuapp.com' + props.item.url
+        props.onWatchFilm(url)
+    }
+
     return (
         <Paper elevation={0} className={classes.item} style={{backgroundImage: `url('${props.item.img}')`}}>
             <div className={classes.sliderContent}>
@@ -93,7 +98,7 @@ export default function Item(props) {
                     <p className={classes.filmInfo}><span style={{fontSize: '16px'}}>год: </span>{props.item.year}</p>
                 </div>
 
-                <Button className={classes.sliderButton}>
+                <Button className={classes.sliderButton} onClick={handleClickWatch}>
                     Смотреть
                 </Button>
             </div>

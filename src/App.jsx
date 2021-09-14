@@ -133,7 +133,7 @@ function App() {
       }
 
       {!isSearch 
-        ? <Slider />
+        ? <Slider onWatchClick={handleMovieClick}/>
         : ''
       }
       {fetchData()}
