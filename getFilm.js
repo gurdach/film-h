@@ -15,7 +15,14 @@ function readURL(url, base=false) {
     }
     console.log(url)
     return new Promise((resolve, reject) => {
-        https.get(url, (res) => {
+        const options = {
+            headers: {
+                referer: 'https://bazon.cc/',
+                accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                secFetchSite: 'cross-site',
+            }
+        }
+        https.get(url, options,(res) => {
             const { statusCode } = res;
             console.log(statusCode)
             let error;
@@ -58,6 +65,11 @@ app.get('/', (req, res) => {
 
 app.get('/getFilm/:filmType/:num', function (req, res) {
     
+    req.setHeader('referer', 'https://bazon.cc/')
+    req.setHeader('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9')
+    req.setHeader('cache-control', 'max-age=0')
+    req.setHeader('sec-fetch-site', 'cross-site')
+
     res.setHeader("Content-Type", "text/html");
     res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -90,6 +102,84 @@ app.get('/getFilm/:filmType/:num', function (req, res) {
 .catch(err => console.log(err.message))
 })
 
+app.get('/embed/:id', function (req, res) {
+    
+    res.setHeader("Content-Type", "text/html");
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    const id = req.params["id"]
+    
+    const film_url = 'https://v1631803079.bazon.site/embed/' + id
+    const startReq = new Date().getTime();
+    readURL(film_url, false)
+    .then(data => {
+        //console.log(data)
+        const dom = new JSDOM(`${data}`);
+        //console.log(dom.window.document.getElementsByTagName('script')[0]); // "Hello world"
+        const outResp = dom.serialize()
+        //console.log(outResp)
+        //console.log(dom)
+        //{html: outResp}
+        res.send(outResp)
+        const endReq = new Date().getTime();
+        console.log(`SecondWay: ${endReq - startReq}ms`);
+        console.log(req.connection.remoteAddress)
+    }
+)
+.catch(err => console.log(err.message))
+})
+
+app.get('/embed/:id/:translation', function (req, res) {
+    
+    res.setHeader("Content-Type", "text/html");
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    const id = req.params["id"]
+    const translation = req.params["translation"]
+    
+    const film_url = 'https://v1631803079.bazon.site/embed/' + id +'/' + translation
+    const startReq = new Date().getTime();
+    readURL(film_url, false)
+    .then(data => {
+        //console.log(data)
+        const dom = new JSDOM(`${data}`);
+        //console.log(dom.window.document.getElementsByTagName('script')[0]); // "Hello world"
+        const outResp = dom.serialize()
+        //console.log(outResp)
+        //console.log(dom)
+        //{html: outResp}
+        res.send(outResp)
+        const endReq = new Date().getTime();
+        console.log(`SecondWay: ${endReq - startReq}ms`);
+        console.log(req.connection.remoteAddress)
+    }
+)
+.catch(err => console.log(err.message))
+})
+
+
+app.get('/search/bazon?', function (req, res) {
+    const token = 'token=aa9f084b4e35c710768b0ca9345b1510'
+    const base_url = 'https://bazon.cc/api/search?'
+    res.setHeader('Content-Type', 'application/json')
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    const kp = req.query["kp"]
+    const title = req.query["title"]
+    console.log(title+ ' : ' + kp)
+    const startReq = new Date().getTime();
+    const req_url = `${base_url + token + (title ? '&title=' + title : '') + (kp ? '&kp=' + kp : '') }`
+    readURL(req_url)
+    .then(data => {
+
+        res.send(res.json(JSON.parse(data)))
+        const endReq = new Date().getTime();
+        console.log(`SecondWay: ${endReq - startReq}ms`);
+        console.log(req.connection.remoteAddress)
+    }
+)
+.catch(err => console.log(err.message))
+})
+
 app.get('/photo?', function (req, res) {
     res.setHeader('Content-Type', 'application/json')
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -102,7 +192,7 @@ app.get('/photo?', function (req, res) {
     const startReq = new Date().getTime();
     imageBase64(img)
     .then(data => {
-        res.send(res.json({result: data, status: 'success'}))
+        res.send(data)
         const endReq = new Date().getTime();
         console.log(`SecondWay: ${endReq - startReq}ms`);
         console.log(req.connection.remoteAddress)

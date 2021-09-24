@@ -40,7 +40,7 @@ export default function Slider(props) {
             imdb: "7.2",
             year: 2021,
             img: "./img/image4.jpg",
-            url: "/getFilm/movie/49860",
+            url: "https://v1631803079.bazon.site/embed/1bec6099d7b9c87c2d3ddd4f1f99d0b3",
         },
     ]
 

@@ -85,7 +85,8 @@ export default function Item(props) {
     const classes = useStyles(); 
 
     const handleClickWatch = () => {
-        const url = 'https://film-h.herokuapp.com' + props.item.url
+        //'https://film-h.herokuapp.com' + 
+        const url = props.item.url
         props.onWatchFilm(url)
     }
 

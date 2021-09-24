@@ -50,8 +50,9 @@ const StyledSlider = styled(Slider)`
     .slick-track {
         height: 100%!important;
         display: flex!important;
-        align-items: center!important;
+        align-items: flex-start!important;
         justify-content: space-between!important;
+        padding: 25px 0 0;
     };
     .slick-slider {
         padding: 0!important;
@@ -68,16 +69,35 @@ const StyledSlider = styled(Slider)`
     .slick-dots li button {
         color: #fff!important;
     };
-    @media screen and (max-width: 300px) {
+    @media screen and (max-width: 340px) {
         .slick-slide {
-            max-width: 290px!important;
+            max-width: 320px!important;
             min-width: 160px!important;
             margin: 0 10px!important;
         };
     }
+    @media screen and (max-width: 1284px) {
+        .slick-next {
+            right: 15px!important;
+            width: 50px!important;
+            height: 50px!important;
+        };
+        .slick-next:before {
+            font-size: 40px;
+        };
+        .slick-prev {
+            z-index: 100;
+            left: 10px!important;
+            width: 50px!important;
+            height: 50px!important;
+        };
+        .slick-prev:before {
+            font-size: 40px;
+        };
+    }
 `;
 
-export default function SliderMovies(props) {
+export default function SliderVideos(props) {
     const classes = useStyles()
 
     var settingsSlider = {
@@ -88,10 +108,10 @@ export default function SliderMovies(props) {
         speed: 200,
         slidesToShow: 6,
         slidesToScroll: 2,
-        swipe: true,
-        swipeToSlide: false,
-        touchThreshold: 20,
+        touchThreshold: 50,
         pauseOnFocus: true,
+        lazyLoad: 'progressive',
+        swipe: false,
         // cssEase: 'cubic-bezier(0.45, 0, 0.55, 1)',
         responsive: [
             {
@@ -100,7 +120,8 @@ export default function SliderMovies(props) {
                 slidesToShow: 4,
                 slidesToScroll: 3,
                 dots: false
-              }
+              },
+              
             },
             {
                 breakpoint: 740,
@@ -108,7 +129,8 @@ export default function SliderMovies(props) {
                   slidesToShow: 3,
                   slidesToScroll: 2,
                   dots: false
-                }
+                },
+                
             },
             {
                 breakpoint: 512,
@@ -116,7 +138,8 @@ export default function SliderMovies(props) {
                   slidesToShow: 2,
                   slidesToScroll: 1,
                   dots: false
-                }
+                },
+                
             },
             {
                 breakpoint: 384,
@@ -124,34 +147,45 @@ export default function SliderMovies(props) {
                   slidesToShow: 2,
                   slidesToScroll: 1,
                   dots: false
-                }
+                },
+                
               },
             {
-                breakpoint: 300,
+                breakpoint: 340,
                 settings: {
                   slidesToShow: 1,
                   slidesToScroll: 1,
                   dots: false
-                }
+                },
+                
             }
         ],
       };
 
-      const eachData = () => {
-        return props.data.map((item) => (
-            <MovieItem onMovieClick={props.onMovieClick} key={item.id} data={item} />
-        ))
+      const eachData = (params) => {
+        console.log(props.data.map(item => console.log('item', item)))
+        if (params.type === 'films') {
+            return props.data.map(item => (
+                <MovieItem onMovieClick={props.onMovieClick} key={item.kinopoisk_id + item.date} data={item} />
+            ))
+        }
+        if (params.type === 'serials') {
+            return props.data.map(item => (
+                <MovieItem onMovieClick={props.onMovieClick} key={item.kinopoisk_id + item.date} data={item} />
+            ))
+        }
+        
     }
 
       return (
         <div className={classes.container}>
-            <h1 className={classes.title}>Фильмы:</h1>
             <div className={classes.content}>
             <StyledSlider {...settingsSlider} className={classes.slick}>
                 {/* <Slider> */}
-                    {eachData()}
+                    {eachData({type: props.type})}
                 {/* </Slider> */}
-            </StyledSlider>   
+            </StyledSlider>
+             
             </div>
         </div> 
       )

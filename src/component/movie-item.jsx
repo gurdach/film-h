@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { find } from '../api/tmdb'
-import { Skeleton } from '@material-ui/lab'
 
 const useStyles = makeStyles(theme => ({
     root: {
         cursor: "pointer"
     },
     img: {
-        width: "100%"
+        width: "100%",
+        minWidth: "150px",
+        minHeight: "240px"
     },
     link: {
         textDecoration: "none"
@@ -32,27 +32,41 @@ export default function MovieItem(props) {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        find(props.data.imdb_id, {
-            language: "ru_RU",
-            external_source: "imdb_id"
-        }).then(result => {
-            setResult(result)
-        })
-            .then(() => {
+        if (!props.data.info.poster.indexOf('https://st.kp.yandex.net')) {
+            getBase64(props.data.info.poster, {type: 'proxy'}).then(result => {
+            setResult(result.result);
+            }).then(() => {
                 setFetchingState(false)
-            })
-            .catch(error => {
-                setError(error)
-            })
-    }, [props.data.imdb_id])
+            }).catch(error => error)
+        } else {
+            setResult(props.data.info.poster)
+            setTimeout(() => setFetchingState(false), 1000)
+        }
+
+        // find(props.data.imdb_id, {
+        //     language: "ru_RU",
+        //     external_source: "imdb_id"
+        // }).then(result => {
+        //     setResult(result)
+        // })
+        //     .then(() => {
+        //         setFetchingState(false)
+        //     })
+        //     .catch(error => {
+        //         setError(error)
+        //     })
+    }, [props.data.info.poster])
+
+    const getBase64 = async (url, options) => {
+        const urlFetch = options.type === 'normal' ? url : 'https://film-h.herokuapp.com/photo?url=' + url;
+        return fetch(urlFetch).then(res => res.json())
+        .catch(error => error)
+    }
 
     const getPosterImage = () => {
 
-        const BASE_URL = "https://image.tmdb.org/t/p/"
-        const FILE_SIZE = "w400"
-
         if (isFetching) {
-            return <Skeleton variant="rect" animation="pulse" width={150} height={250} />
+            return <img className={classes.img} src={'https://via.placeholder.com/160x240/041e30/FFFFFF?text=loading...'} alt="" />
         }
 
         if (error) {
@@ -60,26 +74,16 @@ export default function MovieItem(props) {
         }
 
         if (result) {
-
-
             const FILE_PATH = () => {
-                if (result.movie_results.length) {
-                    return BASE_URL + FILE_SIZE + '/' + result.movie_results[0].poster_path
-                }
-                else if (result.tv_results.length) {
-                    return BASE_URL + FILE_SIZE + '/' + result.tv_results[0].poster_path
-                }
-                else {
-                    return 'https://via.placeholder.com/150x220/eee'
-                }
+                return result;
             }
-            return <><img className={classes.img} src={FILE_PATH()} alt="" /></>
+            return <><img className={classes.img} data-lazy={'https://via.placeholder.com/150x220/041e30/FFFFFF?text=loading...'} src={FILE_PATH()} alt=""/></>
         }
 
     }
 
     const handleMovieClick = () => {
-        const iframe_src = 'https://film-h.herokuapp.com/getFilm' + props.data.iframe_src.slice(26)
+        const iframe_src = 'https://film-h.herokuapp.com/embed/' + props.data.link.slice(37)
         props.onMovieClick(iframe_src)
     }
 
@@ -89,7 +93,7 @@ export default function MovieItem(props) {
         <React.Fragment>
             <li className={classes.root} onClick={handleMovieClick}>
                 {getPosterImage()}
-                <Typography className={classes.title} align="center">{props.data.ru_title || props.data.title}</Typography>
+                <Typography className={classes.title} align="center">{props.data.info.rus}</Typography>
             </li >
         </React.Fragment>
     )
