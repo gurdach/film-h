@@ -122,7 +122,7 @@ app.get("/embed/:id", function (req, res) {
       //console.log(dom.window.document.getElementsByTagName('script')[0]); // "Hello world"
       let outResp = dom.serialize();
       console.log(outResp);
-      outResp = outResp.replaceAll(":1,", ":0,");
+      outResp = outResp.replace(":1,", ":0,");
       //console.log(dom)
       //{html: outResp}
       res.send(outResp);
