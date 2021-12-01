@@ -121,7 +121,7 @@ app.get("/embed/:id", function (req, res) {
       const dom = new JSDOM(`${data}`);
       //console.log(dom.window.document.getElementsByTagName('script')[0]); // "Hello world"
       let outResp = dom.serialize();
-      console.log(typeof outResp);
+      console.log(outResp);
       outResp = outResp.replaceAll(":1,", ":0,");
       //console.log(dom)
       //{html: outResp}
