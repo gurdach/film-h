@@ -108,12 +108,12 @@ app.get("/getFilm/:filmType/:num", function (req, res) {
 });
 
 app.get("/embed/:id", function (req, res) {
-  req.setHeader("referer", "https://bazon.cc/");
-  req.setHeader("host", "https://films.bazon.site/");
-  req.setHeader("origin", "films.bazon.site");
+  res.setHeader("referer", "https://bazon.cc/");
+  res.setHeader("host", "https://films.bazon.site/");
+  res.setHeader("origin", "films.bazon.site");
 
-  req.setHeader("cache-control", "max-age=0");
-  req.setHeader("sec-fetch-site", "cross-site");
+  res.setHeader("cache-control", "max-age=0");
+  res.setHeader("sec-fetch-site", "cross-site");
 
   res.setHeader("Content-Type", "text/html");
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -239,3 +239,4 @@ app.get("/photo?", function (req, res) {
 });
 
 app.listen(PORT);
+
