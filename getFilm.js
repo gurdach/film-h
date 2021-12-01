@@ -109,10 +109,9 @@ app.get("/getFilm/:filmType/:num", function (req, res) {
 
 app.get("/embed/:id", function (req, res) {
   req.setHeader("referer", "https://bazon.cc/");
-  req.setHeader(
-    "accept",
-    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
-  );
+  req.setHeader("host", "https://films.bazon.site/");
+  req.setHeader("origin", "films.bazon.site");
+
   req.setHeader("cache-control", "max-age=0");
   req.setHeader("sec-fetch-site", "cross-site");
 
