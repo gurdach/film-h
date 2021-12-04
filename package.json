@@ -11,6 +11,8 @@
     "@testing-library/user-event": "^12.8.3",
     "classnames": "^2.3.1",
     "express": "^4.17.1",
+    "express-http-proxy": "^1.6.3",
+    "firebase": "^9.5.0",
     "gzipper": "^5.0.0",
     "jsdom": "^17.0.0",
     "jssoup": "0.0.12",
