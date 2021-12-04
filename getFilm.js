@@ -5,6 +5,7 @@ const jsdom = require("jsdom");
 const path = require("path");
 const { JSDOM } = jsdom;
 var app = express();
+var proxy = require("express-http-proxy");
 
 const PORT = process.env.PORT || 3001;
 
@@ -68,6 +69,8 @@ app.use(express.static(path.resolve(__dirname, "build")));
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });
+
+app.use("/new/", proxy("v1638648650.bazon.site"));
 
 app.get("/getFilm/:filmType/:num", function (req, res) {
   req.setHeader("referer", "https://bazon.cc/");
