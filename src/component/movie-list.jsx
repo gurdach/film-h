@@ -10,8 +10,8 @@ const useStyles = makeStyles(theme => ({
         margin: 0,
         padding: 0,
         display: "grid",
-        gridTemplateColumns: "repeat(7, 1fr);",
-        gridGap: "30px",
+        gridTemplateColumns: "repeat(6, 1fr);",
+        gridGap: "20px",
         listStyle: "none",
         marginBottom: "20px",
         [theme.breakpoints.down('md')]: {
@@ -34,7 +34,7 @@ export default function MovieList(props) {
 
     const eachData = () => {
         return props.data.map((item) => (
-            <MovieItem onMovieClick={props.onMovieClick} key={item.id} data={item} />
+            <MovieItem onMovieClick={props.onMovieClick} key={item.kinopoisk_id + item.date} data={item} />
         ))
     }
 

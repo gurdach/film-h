@@ -1,9 +1,9 @@
 import Header from './component/header'
-import { short, movies } from './api/videocdn'
+import { search, film } from './api/newapi'
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Slider from './component/main-slider'
-import SliderMovies from './component/slider-movies'
+import SliderVideos from './component/slider-videos'
 import ResultSearch from './component/results'
 import MovieBackdrop from './component/backdrop'
 import Player from './component/player'
@@ -27,6 +27,7 @@ function App() {
   const [isSearch, setSearchState] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [queryType, setQueryType] = useState('all')
   const [isFetching, setFetchingState] = useState(true)
   const [error, setError] = useState(null)
   const [backdropIsOpened, setBackdropState] = useState(false)
@@ -36,8 +37,9 @@ function App() {
   const getMovies = () => {
 
     if (isSearch) {
-      short({ title: searchQuery, page: currentPage }).then(result => {
+      film({ title: searchQuery}).then(result => {
         setFetchingState(false)
+        console.log(result.results)
         setResult(result)
         setSearchState(true)
       })
@@ -45,8 +47,9 @@ function App() {
       if (currentPage === 0) {
         setCurrentPage(1)
       }
-      movies({ page: currentPage }).then(result => {
+      search({ page: currentPage, type: queryType }).then(result => {
         setFetchingState(false)
+        console.log(result)
         setResult(result)
       }).catch(error => {
         setError(error)
@@ -67,7 +70,7 @@ function App() {
   const searchHandler = (query) => {
     setSearchState(true)
     setSearchQuery(query)
-    short({ title: query }).then(result => {
+    film({ title: query }).then(result => {
       setFetchingState(false)
       setResult(result)
     })
@@ -94,7 +97,6 @@ function App() {
   }
 
   const fetchData = () => {
-
     if (isFetching) {
       return <></>
     }
@@ -103,22 +105,23 @@ function App() {
       return <div>{error.message}</div>
     }
 
-    if (result.data) {
+    if (result.results) {
       if (isSearch) {
         return <>
-        <ResultSearch result={result.data} onMovieClick={handleMovieClick} searchQuery={searchQuery}/>
+        <ResultSearch result={result.results} onMovieClick={handleMovieClick} searchQuery={searchQuery}/>
       </>
       }
-      return <>
-        {isSearch 
-          ? ''
-          : <SliderMovies data={result.data} onMovieClick={handleMovieClick}/>
-        }
+
+      if (!isFetching) {
+        return <>
+        <SliderVideos type={'films'} data={result.results} onMovieClick={handleMovieClick}/>
+        
       </>
+      }
+
     } else {
       return <div className="not-found">Ничего не найдено</div>
     }
-
   }
 
   return (
@@ -136,6 +139,7 @@ function App() {
         ? <Slider onWatchClick={handleMovieClick}/>
         : ''
       }
+
       {fetchData()}
       
       <MovieBackdrop opened={backdropIsOpened} onClose={handleCloseBackdrop}>
